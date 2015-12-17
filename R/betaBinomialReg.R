@@ -120,7 +120,7 @@ geem_betabinomial <- function(formula,N,id,waves,data=parent.frame(),
     #update rho
     if(rho.fixed==FALSE) {
       yhat <- predictBB(fit,N)
-      residuals <- data$count - yhat
+      residuals <- get((all.vars(formula)[1]),data) - yhat
 
       rho <- lm(residuals^2~ offset(yhat*(1-yhat/N)) + I(yhat*(1-yhat/N)*(N-1)))$coefficients[2]
       if(rho < 0 | rho >=1) {
