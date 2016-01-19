@@ -46,7 +46,11 @@ geem_betabinomial <- function(formula,N,id,waves,data=parent.frame(),
 
   #Family functions
   LinkFun <- function(mu) {
-    p <- mu/N
+    if(length(mu)==1) {
+      p <- mu/max(N)
+    } else {
+      p <- mu/N
+    }
     log(p/(1-p))
   }
 
