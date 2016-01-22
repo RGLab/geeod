@@ -5,7 +5,8 @@
 #' @param X An optional matrix of explanatory variables.
 #'
 #' @return Returns a vector of expected counts
-#'
+#' @import geepack geem
+#' @export
 predictBB <- function(fit,N,X=NULL) {
   eta <- predict(fit)
   expectation <- N*exp(eta)/(1+exp(eta))
@@ -20,7 +21,7 @@ predictBB <- function(fit,N,X=NULL) {
 #'
 #' @param formula See corresponding documentation to \code{geem}.
 #' @param N A vector of total counts of length \code{reponse}.
-#' @param id See corresponding documentation to \code{geem}.
+#' @param id See corresponding documentation to \code{geem}. id must be a factor or integer variable.
 #' @param data See corresponding documentation to \code{geem}.
 #' @param corstr See corresponding documentation to \code{geem}.
 #' @param Mv See corresponding documentation to \code{geem}.
@@ -37,12 +38,16 @@ predictBB <- function(fit,N,X=NULL) {
 #'
 #'
 #' @return An object of class "geem_betabinomial
+#' @export
 geem_betabinomial <- function(formula,N,id,waves,data=parent.frame(),
                               corstr="independence",weights=NULL,corr.mat=NULL,
                               init.beta=NULL,init.alpha=NULL,init.phi=1,init.rho=0,
                               rho.fixed=FALSE,
                               scale.fix=FALSE,nodummy=FALSE,sandwich=TRUE,
                               maxit=20,tol=1e-05) {
+  if(class(id)!=factor){
+    stop("id must be a factor variable type")
+  }
 
   #Family functions
   LinkFun <- function(mu) {
@@ -94,7 +99,6 @@ geem_betabinomial <- function(formula,N,id,waves,data=parent.frame(),
   call$family <- FunList
 
   #initializing beta with geeglm
-  require(geepack)
   env <- parent.frame()
   modelMatCall <- list(object=call$formula,data=call$data)
   modelMat <- do.call("model.matrix",modelMatCall,envir=env)
@@ -136,6 +140,7 @@ geem_betabinomial <- function(formula,N,id,waves,data=parent.frame(),
     }
 
     call$init.beta <- as.vector(betas[,i-1])
+    call$N=NULL
     try(fit <- do.call("geem",call,envir=env))
     betas <- cbind(betas,coef(fit))
 

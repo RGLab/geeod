@@ -1,11 +1,13 @@
 Package: geeod
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Generalized Estimating Equation Modeling of Beta Binomial Distributed Data
 Version: 0.1
 Date: 2015-12-07
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: person("Amit", "Meir", email = "ameir@fredhutch.org", role = c("aut", "cre"))
+Description: Fits beta-binomial generalized estimating equation model to count data.
+License: GPL3
 LazyData: TRUE
-Depends: geeM,
+Depends:
+    geeM,
     geepack
+RoxygenNote: 5.0.1

@@ -9,8 +9,7 @@ fittedList <- lapply(1:length(leaves),c)
 for(i in 1:length(leaves)) {
   tempdata <- data[which(data$population==leaves[i]),]
   tempdata <- tempdata[-which(tempdata$visitno=="pos"),]
-  fit <- geem_betabinomial(count~stim*visitno,N=parentcount,id=paste(tempdata$ptid,tempdata$visitno,sep=""),data=tempdata,waves=NULL,
-                           corstr="exchangeable")
+  fit <- geem_betabinomial(count~stim*visitno,N=parentcount,id=factor(paste(tempdata$ptid,tempdata$visitno,sep="")),data=tempdata,waves=NULL,corstr="exchangeable")
   fittedList[[i]] <- fit
   print(fit$rhos)
   coef <- coef(fit)[9:20]
